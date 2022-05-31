@@ -1,0 +1,383 @@
+CREATE TABLE users (
+id INT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(63),
+email VARCHAR(127),
+phone VARCHAR(127),
+password VARCHAR(127),
+created TIMESTAMP
+)
+CREATE TABLE images (
+id INT AUTO_INCREMENT PRIMARY KEY,
+owner_id INT,
+name VARCHAR(255),
+created TIMESTAMP,
+FOREIGN KEY (owner_id)  REFERENCES users(id)
+)
+CREATE TABLE favorites (
+user_id INT,
+image_id INT,
+created TIMESTAMP,
+FOREIGN KEY (user_id)  REFERENCES users(id),
+FOREIGN KEY (image_id)  REFERENCES images(id),
+PRIMARY KEY(user_id, image_id)
+)
+CREATE TABLE files (
+id INT AUTO_INCREMENT PRIMARY KEY,
+image_id INT,
+size VARCHAR(63),
+path VARCHAR(255),
+created TIMESTAMP,
+FOREIGN KEY (image_id)  REFERENCES images(id)
+)
+	File struct {
+		ID   int    `json:"id" db:"id,omitempty"`
+		Size string `json:"size" db:"size"`
+		Path string `json:"path" db:"path"`
+	}
+
+
+
+CREATE TABLE users (
+    id integer PRIMARY KEY,
+    username varchar,
+    balance integer,
+    tags varchar[],
+    state integer,
+    state_data jsonb,
+    campaign varchar,
+    is_active boolean,
+    created timestamp with time zone
+) WITH (OIDS=FALSE);
+
+CREATE TABLE jobs (
+    id serial PRIMARY KEY,
+    owner_id integer,
+    tags varchar[],
+    stage integer,
+    job_data jsonb,
+    created timestamp with time zone
+) WITH (OIDS=FALSE);
+
+	CREATE TABLE payments (
+        id serial PRIMARY KEY,
+        job_id integer,
+        amount int,
+        status integer,
+        created timestamp with time zone
+    ) WITH (OIDS=FALSE);
+CREATE TABLE bots (
+    id integer PRIMARY KEY,
+    token varchar,
+    api_key varchar,
+    username varchar,
+    name varchar,
+    owner_id integer
+) WITH (OIDS=FALSE);
+
+CREATE TABLE bot_users (
+    user_id integer,
+    bot_id integer,
+    is_active boolean,
+    last_msg timestamp with time zone,
+    PRIMARY KEY (user_id, bot_id)
+) WITH (OIDS=FALSE);
+
+CREATE TABLE telegram_users (
+    id integer PRIMARY KEY,
+    is_active boolean,
+    last_msg timestamp with time zone
+) WITH (OIDS=FALSE);
+
+CREATE TABLE transactions (
+    id serial PRIMARY KEY,
+    bot_id integer,
+    amount varchar,
+    t integer,
+    users integer,
+    created timestamp with time zone
+) WITH (OIDS=FALSE);
+
+CREATE TABLE withdraws (
+    id serial PRIMARY KEY,
+    user_id integer,
+    amount varchar,
+    method integer,
+    comment varchar,
+    created timestamp with time zone
+) WITH (OIDS=FALSE);
+
+CREATE TABLE ads (
+    id serial PRIMARY KEY,
+    owner_id integer,
+    count integer,
+    t integer,
+    text varchar,
+    img varchar,
+    amount varchar,
+    invoice varchar,
+    stage integer,
+    created timestamp with time zone
+) WITH (OIDS=FALSE);
+
+CREATE TABLE payments (
+    id serial PRIMARY KEY,
+    ad_id integer,
+    amount varchar,
+    method integer,
+    created timestamp with time zone
+) WITH (OIDS=FALSE);
+
+
+
+    CREATE TABLE `users` (
+        `id` INTEGER PRIMARY KEY,
+        `username` VARCHAR(64),
+        `language` VARCHAR(4),
+        `timezone` VARCHAR(16),
+        `active` INTEGER,
+        `created` DATE
+    );
+
+    CREATE TABLE `stats` (
+        `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+        `users` INTEGER,
+        `active_users` INTEGER,
+        `uses` INTEGER,
+        `created` DATE
+    );
+
+    CREATE TABLE call_requests
+    (
+        id serial PRIMARY KEY,
+        name varchar,
+        phone_number varchar
+    )
+    WITH (OIDS=FALSE);
+
+    CREATE TABLE users
+    (
+        id serial PRIMARY KEY,
+        username varchar,
+        email text NOT NULL UNIQUE,
+        viewed_notification int[],
+        hidden_notification int[],
+        likes int[],
+        bookmarks int[],
+        image varchar,
+        cover varchar,
+        type int DEFAULT 0,
+        meta jsonb,
+        password varchar NOT NULL
+    )
+    WITH (OIDS=FALSE);
+
+    CREATE TABLE users
+    (
+        id serial PRIMARY KEY,
+        name varchar,
+        phone_number varchar,
+        password varchar,
+        type int,
+        cadastr varchar,
+        passport jsonb
+    )
+    WITH (OIDS=FALSE);
+
+    CREATE TABLE deals
+        (
+            id serial PRIMARY KEY,
+            agent_id int,
+            owner_id int NOT NULL,
+            data jsonb,
+            files jsonb[],
+            type int,
+            archived boolean,
+            created timestamp with time zone
+        )
+        WITH (OIDS=FALSE);
+
+ alter table deals rename to old_deals;
+ insert into deals (id,agent_id,  owner_id, data, files, type, archived, created) select id,0, owner_id, data, files, type, archived, created from old_deals;
+    CREATE TABLE documents
+            (
+                id serial PRIMARY KEY,
+                deal_id int,
+                name varchar,
+                file varchar,
+                status varchar
+            )
+            WITH (OIDS=FALSE);
+
+    CREATE TABLE painters (
+            id serial PRIMARY KEY,
+            name varchar NOT NULL UNIQUE,
+            email varchar NOT NULL UNIQUE,
+            phone_number varchar,
+            category varchar,
+            description text,
+            image varchar,
+            social jsonb,
+            block boolean
+    )
+    WITH (OIDS=FALSE);
+
+    CREATE TABLE pictures (
+            id serial PRIMARY KEY,
+            painter_id int NOT NULL,
+            name varchar,
+            image varchar,
+            size varchar,
+            zones varchar[],
+            style varchar,
+            quantity varchar,
+            year int,
+            price int,
+            available boolean,
+            country varchar,
+            frame_material varchar,
+            canvas_material varchar,
+            description text
+    )
+    WITH (OIDS=FALSE);
+
+    CREATE TABLE buy_requests (
+            id serial PRIMARY KEY,
+            picture_id int NOT NULL,
+            name varchar,
+            email varchar,
+            phone_number varchar
+    )
+    WITH (OIDS=FALSE);
+
+    CREATE TABLE transactions
+        (
+            id serial PRIMARY KEY,
+            user_id int NOT NULL,
+            deal_id int NOT NULL,
+            type text,
+            order jsonb,
+            created timestamp with time zone
+        )
+        WITH (OIDS=FALSE);
+
+    CREATE TABLE advertisings(
+            id serial PRIMARY KEY,
+            owner_id int,
+            deal_id int,
+            type text,
+            name varchar,
+            address varchar,
+            corps varchar,
+            flat int,
+            metro varchar,
+            cost int,
+            sell_type varchar,
+            area int,
+            live_area int,
+            room_count int,
+            layout varchar,
+            house_type varchar,
+            floor_count int,
+            floor int,
+            repair varchar,
+            sep_bathroom int,
+            comb_bathroom int,
+            furniture varchar,
+            appliances varchar,
+            window_view varchar,
+            mortgage boolean,
+            cadastr varchar,
+            photo varchar[],
+            layouts varchar[],
+            link_youtube varchar,
+            link_instagram varchar,
+            other_link varchar,
+            description text,
+            phone varchar,
+            tariff int,
+            archived boolean,
+            status varchar
+    )
+    WITH (OIDS=FALSE);
+
+
+    CREATE TABLE invites
+            (
+                id serial PRIMARY KEY,
+                user_id int NOT NULL,
+                deal_id int NOT NULL
+            )
+            WITH (OIDS=FALSE);
+
+    CREATE TABLE forms (
+            id serial PRIMARY KEY,
+            name varchar,
+            image varchar,
+            birth varchar,
+            live varchar,
+            title varchar,
+            path varchar,
+            style varchar,
+            exhibitions varchar,
+            rewards varchar,
+            projects varchar,
+            position varchar,
+            email varchar,
+            phone_number varchar,
+            approved boolean
+
+    )
+    WITH (OIDS=FALSE);
+
+    CREATE TABLE comments (
+            id serial PRIMARY KEY,
+            picture_id int NOT NULL,
+            user_id int,
+            description text,
+            created timestamp with time zone
+    )
+    WITH (OIDS=FALSE);
+
+    CREATE TABLE notifications (
+            id serial PRIMARY KEY,
+            title varchar,
+            description text,
+            created timestamp with time zone
+    )
+    WITH (OIDS=FALSE);
+
+    alter table deals rename to old_deals;
+    insert into tablename (col1, col2, col3) select col2, col1, col3 from oldtable;
+
+    CREATE TABLE `call_requests` (
+        `id` INTEGER PRIMARY KEY AUTgopkg.in/gomail.v2OINCREMENT,
+        `name` VARCHAR(64) NULL,
+        `phone_number` VARCHAR(64) NULL
+    );
+    CREATE TABLE `users` (
+        `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+        `username` VARCHAR(64) NOT NULL UNIQUE,
+        `email` VARCHAR(256) NOT NULL UNIQUE,
+        `password` VARCHAR(256) NOT NULL UNIQUE
+    );
+    CREATE TABLE `painters` (
+        `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+        `name` VARCHAR(128) NOT NULL UNIQUE,
+        `email` VARCHAR(256) NOT NULL UNIQUE,
+        `password` VARCHAR(256) NOT NULL
+    );
+    CREATE TABLE `pictures` (
+            `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+            `painter_id` INTEGER NOT NULL,
+            `name` VARCHAR(128),
+            `size` VARCHAR(128),
+            `style` VARCHAR(128),
+            `quantity` INTEGER NOT NULL,
+            `year` INTEGER NOT NULL,
+            `country` VARCHAR(128),
+            `frame_material` VARCHAR(128),
+            `canvas_material` VARCHAR(128),
+            `description` VARCHAR(1024)
+    );
+
+
