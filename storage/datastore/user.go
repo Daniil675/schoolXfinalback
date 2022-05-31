@@ -39,6 +39,10 @@ func UsersGetAll() ([]User, bool) {
 	ok := Datastore.GetAll(UserTable, &items)
 	return items, ok
 }
+func UserDeleteBy(key, value interface{}) bool {
+	ok := Datastore.DeleteBy(UserTable, db.Cond{key: value})
+	return ok
+}
 
 func UsersCount() (int, bool) {
 	count, ok := Datastore.Count(UserTable)

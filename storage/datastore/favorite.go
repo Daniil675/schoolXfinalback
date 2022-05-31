@@ -7,8 +7,8 @@ import (
 
 const FavoriteTable = "favorites"
 
-func FavoriteAdd(item Favorite) (int, bool) {
-	return Datastore.Add(FavoriteTable, item)
+func FavoriteAdd(item Favorite) bool {
+	return Datastore.AddWithoutID(FavoriteTable, item)
 }
 
 func FavoriteGetBy(key, value interface{}) (Favorite, bool) {

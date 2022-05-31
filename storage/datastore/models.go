@@ -26,6 +26,7 @@ type (
 	}
 	Image struct {
 		ID      int       `json:"id" db:"id,omitempty"`
+		OwnerID int       `json:"owner_id" db:"owner_id"`
 		Name    string    `json:"name" db:"name"`
 		Created time.Time `json:"created" db:"created"`
 	}

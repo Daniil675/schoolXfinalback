@@ -26,7 +26,6 @@ id INT AUTO_INCREMENT PRIMARY KEY,
 image_id INT,
 size VARCHAR(63),
 path VARCHAR(255),
-created TIMESTAMP,
 FOREIGN KEY (image_id)  REFERENCES images(id)
 )
 	File struct {

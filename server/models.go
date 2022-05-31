@@ -11,4 +11,9 @@ type (
 	Err struct {
 		Code ErrorCode `json:"error_code"`
 	}
+
+	ResizeConfig struct {
+		Name          string
+		Width, Height int
+	}
 )

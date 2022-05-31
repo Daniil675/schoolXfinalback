@@ -39,7 +39,10 @@ func ImagesGetAll() ([]Image, bool) {
 	ok := Datastore.GetAll(ImageTable, &items)
 	return items, ok
 }
-
+func ImageDeleteBy(key, value interface{}) bool {
+	ok := Datastore.DeleteBy(UserTable, db.Cond{key: value})
+	return ok
+}
 func ImagesCount() (int, bool) {
 	count, ok := Datastore.Count(ImageTable)
 	return count, ok
